@@ -120,6 +120,7 @@ Die Zentrale für die Spielleitung.
 ```
 DnDMaker/
 ├── README.md
+├── CHANGELOG.md                Releasenotes aller Versionen
 ├── index.html                  Download-Zentrale (Übersichtsseite mit Einzel- und ZIP-Download)
 ├── manifest.json               Liste aller Dateien mit Beschreibung (DE/EN), Größe und Stand
 └── tools/
