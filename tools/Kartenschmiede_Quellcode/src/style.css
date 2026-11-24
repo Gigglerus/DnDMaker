@@ -1,0 +1,71 @@
+/* Kartenschmiede – Ergänzungen zum gemeinsamen Creator-Stil */
+.kbody{display:grid;grid-template-columns:286px 1fr;min-height:0}
+.side{border-right:2px solid var(--gold);background:rgba(251,244,226,.92);overflow:auto;min-height:0;padding-bottom:1em}
+.side .lbl,.dlg .lbl{font-family:var(--fK);font-size:.74em;letter-spacing:.16em;color:var(--gold2);text-transform:uppercase;margin:.7em 0 .3em;display:block}
+.side>.lbl{padding:0 .8em}
+.layers{border-top:1px solid var(--line)}
+.lay{display:flex;align-items:center;gap:.45em;padding:.3em .6em;border-bottom:1px solid var(--line);cursor:pointer}
+.lay:hover{background:#f3e4c0}
+.lay.on{background:#ead1b0;box-shadow:inset 4px 0 0 var(--bur)}
+.lay .ln{font-weight:700;flex:1}
+.lay.on .ln{color:var(--bur)}
+.eye{border:0;background:transparent;cursor:pointer;padding:0 .1em;font-size:.95em}
+.eye.off{opacity:.55}.eye:disabled{opacity:.3;cursor:default}
+.tools{padding:0 .8em}
+.tools p{margin:.5em 0}
+.seg.col{flex-direction:column}
+.seg.col button{text-align:left;padding:.28em .6em}
+.terrs{display:grid;grid-template-columns:1fr 1fr;gap:.25em;margin-bottom:.5em}
+.terrs button{display:flex;align-items:center;gap:.4em;border:1.5px solid #b49a6a;background:#fffaf0;border-radius:4px;padding:.15em .4em;cursor:pointer;font-weight:700;font-size:.9em}
+.terrs button.on{background:var(--bur);color:var(--cream);border-color:#4d1010}
+.terrs i{width:16px;height:16px;border-radius:3px;border:1px solid #3b2416;flex:none}
+.selbox{margin:.7em .6em 0;padding:.1em .6em .6em;border:1.5px solid var(--gold);border-radius:8px;background:var(--card)}
+.prev{width:100%;height:auto;border:1px solid var(--line);border-radius:5px;margin:.4em 0 .3em;display:block}
+.clist{max-height:240px;overflow:auto;border-top:1px solid var(--line);margin-top:.2em}
+.mapName{font-family:var(--fT);font-size:1.15em;color:var(--bur);background:transparent!important;border:0!important;border-bottom:1.5px dashed var(--line)!important;border-radius:0!important;width:8.5em}
+.mapName:focus{outline:none;border-bottom-color:var(--gold)!important}
+.mapwrap{background:#cdbd97;cursor:crosshair}
+.mapwrap.pan{cursor:grabbing}
+.stage{box-shadow:0 4px 22px rgba(40,22,10,.45)}
+.stage canvas{position:absolute;left:0;top:0;display:block}
+.uisvg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.uisvg .cur{fill:rgba(255,255,255,.12);stroke:#fff;stroke-width:1.4;filter:drop-shadow(0 0 1px #000)}
+.uisvg .selr{fill:rgba(255,217,106,.14);stroke:#8a2222;stroke-width:1.6;stroke-dasharray:5 3}
+.uisvg .sell{fill:none;stroke:#ffd96a;stroke-width:7;stroke-opacity:.6;stroke-linecap:round;stroke-linejoin:round}
+.uisvg .drawl{fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.uisvg .drawl.w{stroke:#2f7fb8}.uisvg .drawl.r{stroke:#6b4a2a;stroke-dasharray:6 4}
+.status{position:absolute;left:.6em;bottom:.6em;background:rgba(59,36,22,.85);color:var(--cream);padding:.1em .6em;border-radius:4px;font-size:.82em;pointer-events:none}
+.status:empty{display:none}
+.chk{display:flex;align-items:center;gap:.4em;margin:.2em 0;font-family:var(--fB)!important;font-size:1em!important;letter-spacing:0!important;color:var(--ink)!important;text-transform:none!important;justify-content:flex-start!important;cursor:pointer}
+.sub2{font-style:italic;color:var(--ink2);text-align:center;margin:.2em 0 .6em}
+.styles{display:grid;grid-template-columns:repeat(3,1fr);gap:.6em}
+.stc{border:2px solid var(--line);border-radius:8px;padding:.35em;cursor:pointer;background:#fffaf0;display:flex;flex-direction:column;align-items:center;text-align:center}
+.stc canvas{width:100%;height:auto;border-radius:4px;display:block;margin-bottom:.25em}
+.stc.on{border-color:var(--bur);box-shadow:0 0 0 2px var(--bur) inset;background:#f6e7c5}
+.stc b{font-family:var(--fT);color:var(--bur);font-weight:normal;font-size:1.2em}
+.fmts{display:grid;grid-template-columns:repeat(3,1fr);gap:.4em}
+.fmts button{border:1.5px solid #b49a6a;background:#fffaf0;border-radius:5px;padding:.25em .5em;cursor:pointer;text-align:left;display:flex;flex-direction:column}
+.fmts button span{font-size:.78em;color:var(--ink2)}
+.fmts button.on{background:var(--bur);border-color:#4d1010;color:var(--cream)}
+.fmts button.on span{color:#ecd9b0}
+.xgrid{display:grid;grid-template-columns:1fr 1fr;gap:0 1.4em;margin-top:.4em}
+@media(max-width:800px){.kbody{grid-template-columns:230px 1fr}.styles,.fmts{grid-template-columns:1fr}.xgrid{grid-template-columns:1fr}}
+/* Stadt-Eigenschaften und Stadtkarten-Editor */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:.4em}.two select{width:100%}
+.rrow{display:grid;grid-template-columns:1fr 3.6em auto auto;gap:.25em;align-items:center;margin-bottom:.2em}
+.rrow input{min-width:0;width:100%}
+.nums2{display:grid;grid-template-columns:1fr 5.5em;gap:.2em .4em;align-items:center}.nums2 input{width:100%}
+.small.bad{color:var(--fail);font-weight:700}
+.cinfo{padding:.5em .8em;border-bottom:1px solid var(--line);font-size:.88em;background:#f6e9c9}
+.stamps{display:grid;grid-template-columns:repeat(3,1fr);gap:.25em}
+.stamps button{border:1.5px solid #b49a6a;background:#fffaf0;border-radius:5px;padding:.1em;cursor:pointer;display:flex;flex-direction:column;align-items:center;font-size:.72em;font-weight:700}
+.stamps button.on{border-color:var(--bur);box-shadow:0 0 0 2px var(--bur) inset;background:#f6e7c5}
+.stamps canvas{width:100%;height:auto}
+.mini{position:absolute;right:.6em;top:.6em;z-index:6;display:flex;flex-direction:column;align-items:flex-end;gap:.3em}
+.mini canvas{border:2px solid var(--gold);border-radius:6px;box-shadow:0 4px 14px rgba(0,0,0,.35);width:300px;height:220px;background:#6aa4c4}
+.mini .small{background:rgba(59,36,22,.88);color:var(--cream);padding:.1em .6em;border-radius:4px}
+/* Reiche */
+.rlist{border:1px solid var(--line);border-radius:5px;background:#fffaf0;max-height:200px;overflow:auto}
+.rsw{width:14px;height:14px;border-radius:3px;border:1px solid #3b2416;flex:none;display:inline-block}
+.rcol{width:2.2em;height:1.9em;padding:0 .1em;border:1.5px solid #b49a6a;border-radius:4px;background:#fffaf0;cursor:pointer}
+.uisvg .rsel{fill:rgba(255,217,106,.18);stroke:#8a2222;stroke-width:1.8;stroke-dasharray:6 4}

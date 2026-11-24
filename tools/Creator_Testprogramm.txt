@@ -1,0 +1,84 @@
+// The Ultimate DND5e Creator - Testprogramm (Node.js)
+// Start:  node Creator_Testprogramm.js [Pfad-zur-HTML-Datei]
+// (Diese Datei ggf. von .txt in .js umbenennen. Standard: the-ultimate-dnd5e-creator.html im selben Ordner.)
+// Prueft alle 12 Klassen x mehrere Rassen x Stufen 1-20 (Auswahl), PDF-Erzeugung, Einlesen, Level-Up und Bearbeiten.
+const fs=require('fs');let blob;globalThis.app={};globalThis.alert=m=>ALERTS.push(m);const ALERTS=[];
+globalThis.document={createElement:()=>({click(){}}),getElementById:()=>({}),body:{appendChild(){}}};globalThis.URL={createObjectURL:b=>(blob=b,"x")};
+const HTMLP=process.argv[2]||'the-ultimate-dnd5e-creator.html';
+const SRC=fs.readFileSync(HTMLP,'utf8').match(/<script>([\s\S]*)<\/script>/)[1];
+(0,eval)(SRC+`;globalThis.X={get S(){return S},get K(){return K},set W(v){W=v},init,ok,go,render,body,calc,pdf,loadPdf,pr,pu,pc,sb,bgp,asi,asiLeft,fin,tsk,tz,chT,chs,cop,eqs,eo,okOpt,buy,pay,rnd,tp,opts,need,nsn,nzn,mg,g2,SPC,SR,C,R,BG,SUB,SL,SHOP,PKG,fv,setLang,STY,sty,used,allSk}`);
+const NM=['Barbar','Barde','Kleriker','Druide','Kämpfer','Mönch','Paladin','Waldläufer','Schurke','Zauberer','Hexenmeister','Magier'];
+const PRI=[[0,2,1,4,5,3],[5,1,2,3,4,0],[4,2,0,5,1,3],[4,2,1,3,5,0],[0,2,1,4,3,5],[1,4,2,0,3,5],[0,5,2,4,1,3],[1,4,2,0,3,5],[1,3,2,5,4,0],[5,2,1,4,3,0],[5,2,1,4,3,0],[3,2,1,4,5,0]];
+const PASSES=[{R:[[0,1],[3,0],[8,0]],L:[1,3,7,13]},{R:[[3,0],[1,2],[7,0]],L:[2,5,9,11,17,20]}];
+const issues={};const note=(k,ctx)=>{(issues[k]=issues[k]||[]).push(ctx)};
+let runs=0,pdfs=0,edits=0,ups=0;
+function fill(c,L,sub,bg,vr){
+  const S=X.S;X.init();X.W=0;const s=X.S;s.lv=L;
+}
+let LANG='de';const TX=()=>LANG=='en'?{at:/Melee/,sub:/Subclass/,slots:/Slots: \d/,pact:/Pact slots/,l4:/Level 4/}:{at:/Nahkampf/,sub:/Unterklasse/,slots:/Plätze: \d/,pact:/Paktplätze/,l4:/Stufe 4/};
+async function one(r,u,c,L,sub,bg,vr){const T=TX();X.setLang(LANG);
+  const ctx=`${LANG} ${NM[c]} L${L} r${r}${X.SR[r]?'.'+u:''} sub${sub} bg${bg}`;runs++;
+  try{
+  X.init();X.W=0;let S=X.S;S.lv=L;X.pr(r);if(X.SR[r])X.pu(u);X.pc(c);X.bgp(bg);
+  if(L>=X.SL[c])X.sb(sub);
+  S.pb=[8,8,8,8,8,8];[15,14,13,12,10,8].forEach((v,i)=>S.pb[PRI[c][i]]=v);
+  if(X.used()>27)note("Punktekauf >27",ctx);
+  let g=0;while(X.asiLeft()>0&&g++<60)for(const a of PRI[c])if(X.asiLeft()>0&&X.fin(a)<20)X.asi(a,1);
+  if(X.asiLeft()!=0)note("ASI nicht verteilbar",ctx);
+  X.render();for(const k of X.opts()){if(S.sk.length<X.need())X.tsk(k)}
+  if(S.sk.length!=X.need())note("Fertigkeiten: zu wenig Optionen",ctx);
+  const q=X.SPC[c];if(q){q.z.slice(0,X.nzn()).forEach(j=>X.tz('cz',j));[...q.s,...X.g2()].slice(0,X.nsn()).forEach(j=>X.tz('zs',j))}
+  for(let p=0;p<3;p++){X.render();for(const h of X.chs()){const l=X.cop(h),n=Math.min(h.n,l.length);for(let i=0;i<n;i++)X.chT(h.id,l[i][0],h.n)}}
+  ['pe','id','bi','ma'].forEach(k=>X.tp(k,0));X.rnd('all');X.rnd('n');X.rnd('a');X.rnd('g');const NAME=S.n;S.al="Neutral gut";S.sp="Tester";
+  X.PKG[c].c.forEach((ch,i)=>X.eqs(i,vr%ch.length));
+  X.render();const it=X.SHOP.findIndex(x=>x.d=="Heiltrank"),dg=X.SHOP.findIndex(x=>x.d=="Dolch");X.buy(dg,1);X.buy(it,1);X.pay(1);
+  S=X.S;S.st=0;X.render();let guard=0;
+  while(guard++<40){const k=X.K[X.S.st];try{X.render();X.body();if(/undefined|NaN|\[object/.test(app.innerHTML))note("HTML enthält undefined/NaN in "+k,ctx)}catch(e){note("Render-Fehler "+k+": "+e.message,ctx)}
+    if(!X.ok())note("Schritt blockiert: "+k,ctx);if(X.S.st>=X.K.length-1)break;X.S.st++;X.render()}
+  const v=X.calc().v;
+  for(const [k,val] of Object.entries(v)){if(/undefined|NaN|\[object|null/.test(val))note("Feldwert defekt: "+k,ctx+" => "+String(val).slice(0,40))}
+
+  {const con=Math.floor((X.fin(2)-10)/2),hd=[12,8,8,8,10,8,10,10,8,6,8,6][c],exp=hd+con+(L-1)*(hd/2+1+con)+(r==0&&u==1?L:0);if(+v.hm!=exp)note("TP-Formel",ctx+" erwartet "+exp+" ist "+v.hm);
+   const FULL={1:"2",2:"3",3:"42",5:"432",7:"4331",9:"43331",11:"433321",13:"4333211",17:"433321111",20:"433332211"},HALF={1:"",2:"2",3:"3",5:"42",7:"43",9:"432",11:"433",13:"4331",17:"43331",20:"43332"};
+   const slot=(g)=>{const m=/Slots: (\d)|Plätze: (\d)/.exec(v["z"+g]||"");return m?+(m[1]||m[2]):0};
+   if([1,2,3,9,11].includes(c)){const e=FULL[L];for(let g=1;g<=e.length;g++)if(slot(g)!=+e[g-1])note("Zauberplätze falsch Grad "+g,ctx+" erwartet "+e[g-1]+" ist "+slot(g));if(slot(e.length+1))note("Zu viele Zauberplatz-Grade",ctx)}
+   if([6,7].includes(c)){const e=HALF[L];for(let g=1;g<=e.length;g++)if(slot(g)!=+e[g-1])note("Halbzauberer Plätze falsch Grad "+g,ctx+" erwartet "+e[g-1]+" ist "+slot(g));if(e===""&&slot(1))note("Halbzauberer hat Plätze auf Stufe 1",ctx)}
+   if(c==10){const pk={1:[1,1],2:[2,1],3:[2,2],5:[2,3],7:[2,4],9:[2,5],11:[3,5],13:[3,5],17:[4,5],20:[4,5]}[L],m=new RegExp((LANG=='en'?'Pact slots: ':'Paktplätze: ')+pk[0]);if(!m.test(v["z"+pk[1]]))note("Paktplätze falsch",ctx+" erwartet "+pk.join("@")+" z"+pk[1]+"="+v["z"+pk[1]])}
+   const chosen=X.S.zs.length+X.S.cz.length;const lines=Object.keys(v).filter(k=>/^z[0-9]$/.test(k)).reduce((t,k)=>t+v[k].split("\n").filter(x=>x&&!/Slots|Plätze|Pact|Pakt/.test(x)).length,0);if(lines!=chosen)note("Zauberanzahl im Bogen",ctx+" gewählt "+chosen+" im Bogen "+lines);
+   if(new Set(X.S.zs).size!=X.S.zs.length)note("Doppelte Zauber",ctx);
+   for(let i=0;i<6;i++)if(X.fin(i)>20)note("Attribut über 20",ctx);
+   const eqT=v.eq;if(!/Dagger|Dolch/.test(eqT)||(L>=3&&!/(Heiltrank|Potion of Healing)/.test(eqT)))note("Gekaufte Artikel fehlen im Bogen",ctx);
+   const goldLeft=+v.gm;if(!(goldLeft>=0))note("Restgold negativ",ctx+" "+v.gm);
+   if(X.S.zs.some(j=>j>=362)||X.S.cz.some(j=>j>=362))note("Zauberindex ungültig",ctx)}
+  const hp=+v.hm,ac=+v.ac;if(!(hp>0))note("TP ungültig "+v.hm,ctx);if(!(ac>=8&&ac<=26))note("RK unplausibel "+v.ac,ctx);
+  if(v.pb!="+"+(Math.ceil(L/4)+1))note("Übungsbonus falsch "+v.pb,ctx);
+  if(!T.at.test(v.at))note("Angriffe fehlen",ctx);
+  const casters=[1,2,3,9,11];if(casters.includes(c)&&!T.slots.test(v.z1))note("Zauberplätze fehlen Grad1",ctx+" z1="+v.z1.slice(0,30));
+  if(c==10&&!T.pact.test(Object.values(v).join("\n")))note("Paktplätze fehlen",ctx);
+  if(L>=4&&!T.l4.test(v.ft))note("Merkmale ab Stufe 4 fehlen",ctx);
+  if(S.sub>=0&&!T.sub.test(v.ft))note("Unterklasse nicht im PDF",ctx);
+  X.pdf();pdfs++;const t=await blob.text();if((t.match(/\/Widget/g)||[]).length<85)note("zu wenige Felder",ctx);
+  await X.loadPdf(blob);if(X.S.old.cur.n!=NAME)note("Roundtrip: Name",ctx+" "+X.S.old.cur.n+"/"+NAME);if(X.S.old.cur.kl!=v.kl)note("Roundtrip: Klasse",ctx);
+  // Aufleveln
+  ups++;let S2=X.S;S2.lv=Math.min(20,L+(L==1?2:1));X.render();if(S2.sub<0&&S2.lv>=X.SL[c])X.sb(0);
+  let g2=0;while(X.asiLeft()>0&&g2++<60)for(const a of PRI[c])if(X.asiLeft()>0&&X.fin(a)<20)X.asi(a,1);
+  const q2=X.SPC[c];if(q2){X.render();[...q2.z].forEach(j=>{if(S2.cz.length<X.nzn()&&!S2.cz.includes(j))X.tz('cz',j)});[...q2.s,...X.g2()].forEach(j=>{if(S2.zs.length<X.nsn()&&!S2.zs.includes(j))X.tz('zs',j)})}
+  for(let p=0;p<3;p++){X.render();for(const h of X.chs()){const l=X.cop(h),n=Math.min(h.n,l.length);let a=S2.ch[h.id]||[];for(const o of l){if(a.length>=n)break;if(!a.includes(o[0])){X.chT(h.id,o[0],h.n);a=S2.ch[h.id]||[]}}}}
+    X.render();for(let i=0;i<X.K.length;i++){X.S.st=i;const k=X.K[i];try{X.render();X.body()}catch(e){note("Level-Up Render "+k+": "+e.message,ctx)}if(!X.ok()&&k!="l")note("Level-Up blockiert: "+k,ctx)}
+  X.S.st=X.K.length-1;X.render();const v2=X.calc().v;X.pdf(X.fv(v2));
+  await X.loadPdf(blob);if(X.S.old.cur.kl!=v2.kl)note("Level-Up Roundtrip",ctx);
+  // Bearbeiten
+  edits++;await X.loadPdf(blob,'e');X.render();for(let i=0;i<X.K.length;i++){X.S.st=i;try{X.render();X.body()}catch(e){note("Edit Render "+X.K[i]+": "+e.message,ctx)}}
+  X.S.st=X.K.length-1;X.render();X.pdf(X.fv(X.calc().v));
+  // Englisch
+  }catch(e){note("Ausnahme: "+e.message.slice(0,80),ctx+" @"+(e.stack||"").split("\n")[1])}
+}
+(async()=>{
+ X.init();X.W=0;X.render();const neg=[];for(const k of ['r','c','b']){X.S.st=X.K.indexOf(k);neg.push(k+":"+(X.ok()?"OFFEN (Fehler)":"gesperrt"))}console.log("Leerer Start, Weiter-Sperre:",neg.join(" "));X.S.st=0;
+ let n=0;for(const P of PASSES)for(let c=0;c<12;c++)for(const [r,u] of P.R)for(const L of P.L){await one(r,u,c,L,n%X.SUB[c].length,n%13,n);n++}
+ for(let c=0;c<12;c++)for(let sub=0;sub<X.SUB[c].length;sub++)await one(3,0,c,13,sub,sub%13,sub);
+ LANG='en';for(let c=0;c<12;c++)for(const L of [3,13])await one(c%2?3:0,1,c,L,c%X.SUB[c].length,c,c);
+ console.log("Läufe",runs,"PDFs",pdfs,"Level-Up",ups,"Edit",edits);
+ const keys=Object.keys(issues);console.log("Befundarten",keys.length);
+ for(const k of keys.slice(0,25))console.log(`- ${k} (${issues[k].length}x) z. B. ${issues[k].slice(0,2).join(" | ")}`);
+})();

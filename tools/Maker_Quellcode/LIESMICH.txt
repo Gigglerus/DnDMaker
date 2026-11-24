@@ -1,0 +1,31 @@
+DND5e Maker – alle Tools in einer Datei
+=======================================
+
+DND5e_Maker.html enthält die Startseite und alle sechs Tools (Creator,
+Charakterverwaltung, Encounter Builder, Kartenschmiede, Atlas,
+Sessionverwaltung). Jedes Tool läuft unverändert in einem eigenen Rahmen;
+die Leiste oben wechselt zwischen ihnen, ohne dass ein Tool neu lädt.
+
+Neu bauen (nach jeder Änderung an einem Tool):
+  1. Die aktuellen Tool-HTMLs (und, wenn vorhanden, manifest.json der
+     Download-Zentrale) in den Ordner "tools" legen.
+  2. python build.py            → DND5e_Maker.html
+     python build.py <Tool-Ordner> <Zieldatei>
+
+Dateien:
+  build.py        setzt alles zusammen
+  src/shell.html  Startseite, Leiste und Steuerung (Platzhalter für Schriften und Tools)
+  src/fonts.css   eingebettete Schriften (wie in der Startseite)
+  test/t1.js      Browser-Test (Node.js + Playwright): node test/t1.js
+
+So hängt es zusammen:
+  - build.py setzt in jedes Tool hinter <meta charset> ein kleines Start-Skript,
+    das window.parent.DNDMaker.hook(window, "<Kennung>") aufruft.
+  - hook() fängt Links und window.open auf andere Tool-Dateien oder die
+    Startseite ab und wechselt stattdessen im Maker (z. B. "Begegnung starten"
+    in der Sessionverwaltung → Encounter Builder).
+  - Die Rahmen haben denselben Ursprung wie die Datei selbst. Gespeicherte
+    Daten (localStorage, IndexedDB) sind deshalb dieselben wie bei den
+    Einzeldateien.
+  - Neues Tool aufnehmen: in build.py (TOOLS) und in src/shell.html
+    (ICON, IDS, Texte <id>K/T/N/D/F in DE und EN) ergänzen.

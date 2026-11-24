@@ -1,0 +1,9 @@
+DND5e Kartenschmiede – Quellcode
+Bauen: python3 build.py  ->  DND5e_Kartenschmiede.html (eine Datei, offline)
+src/core.js    Zustand, Rauschen, Pinsel, Generatoren (Kontinent, Archipel, Gebirge), Flüsse, Brücken, Stadt-Regeln
+src/render.js  Pixel-Grundkarte (3 Stile), Geländesymbole, Stadt-Symbole je Volk, SVG-Ausgabe, Rahmen/Kompass
+src/realm.js   Ebene „Reiche“: Raster, Auswahl-Werkzeuge, Einfärbung (nur Land, Seen, Flüsse), Grenzen, Namen
+src/city.js    Stadt-Eigenschaften wie im Atlas, Stadtkarten-Modell, Zufallsgenerator je Stadtart, Darstellung
+src/cityui.js  Stadtkarten-Editor (Werkzeuge, Minikarte, Export)
+src/ui.js      Oberfläche der Weltkarte, Export (PNG, JPG, WebP, SVG, PDF, Atlas-Projekt)
+src/fonts.css, base.css, orn.js  aus dem DND5e Atlas übernommen (Schriften, Creator-Stil, Ornamente)

@@ -1,0 +1,282 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+
+<title>DnDMaker Downloads</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Almendra:wght@700&family=Cinzel:wght@500;700&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap">
+<style>
+/* Layout: zentrierte Pergamentseite im Creator-Stil, Werkzeugliste als Schriftrollen-Zeilen; zweisprachig DE/EN */
+:root{
+  --parch-in:#f6ecd2; --parch-out:#e9d6a8; --gold:#b8902f; --gold-dk:#a07a2a;
+  --burg:#6e1a1a; --burg-lt:#8a2222; --ink:#3b2416; --ink-soft:#5a3a22; --cream:#f5e9cc;
+  --f-title:"Almendra",Georgia,serif; --f-kick:"Cinzel","Times New Roman",serif; --f-body:"Crimson Pro",Georgia,serif;
+  color-scheme:light;
+}
+body{margin:0;min-height:100%;background:radial-gradient(ellipse at center,var(--parch-in) 40%,var(--parch-out) 100%) fixed,var(--parch-out);color:var(--ink);font:18px/1.5 var(--f-body)}
+.wrap{max-width:760px;margin:0 auto;padding-block:40px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:22px}
+header{text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px}
+.rule{display:flex;align-items:center;gap:10px;width:min(420px,100%)}
+.rule::before,.rule::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.rule i{width:9px;height:9px;background:var(--burg);transform:rotate(45deg);outline:1px solid var(--gold);outline-offset:2px}
+.kick{font-family:var(--f-kick);letter-spacing:.32em;font-size:13px;color:var(--gold-dk);text-transform:uppercase;margin-top:8px}
+h1{font-family:var(--f-title);color:var(--burg);font-size:clamp(34px,7vw,52px);line-height:1.05;margin:0;text-shadow:0 1px 0 rgba(255,255,255,.5),0 2px 4px rgba(59,36,22,.18);text-wrap:balance}
+.sub{font-style:italic;color:var(--ink-soft);margin:4px 0 0;max-width:52ch}
+.sub code{font-style:normal}
+.lang{display:inline-flex;align-items:center;gap:0;border:2px solid var(--ink);border-radius:4px;overflow:hidden;margin-top:10px;background:var(--cream)}
+.lang span{padding:4px 10px;font-size:15px}
+.lang button{border:0;border-left:1px solid var(--ink);border-radius:0;padding:5px 14px;font-size:15px;background:transparent;color:var(--ink)}
+.lang button[aria-pressed="true"]{background:var(--burg);color:var(--cream)}
+.actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;align-items:center}
+button{font:600 17px var(--f-body);cursor:pointer;border-radius:4px;padding:11px 20px}
+button:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.primary{background:linear-gradient(180deg,var(--burg-lt),var(--burg));color:var(--cream);border:1px solid #4a1010;box-shadow:0 3px 8px rgba(59,36,22,.3)}
+.primary:disabled{opacity:.5;cursor:not-allowed}
+.secondary{background:var(--cream);color:var(--ink);border:2px solid var(--ink);box-shadow:0 2px 5px rgba(59,36,22,.18);padding:7px 14px;font-size:15px}
+.home{display:flex;flex-direction:column;gap:8px;padding:14px 16px;border:1px dashed var(--gold);border-radius:4px;background:rgba(255,250,235,.55);font-size:16px;color:var(--ink-soft)}
+.home strong{color:var(--ink)}
+.home .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.home code{user-select:all;flex:1;min-width:0}
+.meta{font-size:15px;color:var(--ink-soft);text-align:center}
+.status{min-height:1.4em;text-align:center;font-size:15px;color:var(--burg)}
+section h2{font-family:var(--f-kick);font-weight:700;font-size:14px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-dk);margin:0 0 8px;display:flex;align-items:center;gap:10px}
+section h2::after{content:"";flex:1;height:1px;background:var(--gold);opacity:.5}
+ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+li{display:grid;grid-template-columns:1fr auto;gap:4px 16px;align-items:center;padding:14px 16px;background:rgba(255,250,235,.55);border:1px solid rgba(184,144,47,.45);border-radius:4px}
+li .n{font-weight:600;font-size:19px;min-width:0}
+li .d{grid-column:1;color:var(--ink-soft);font-size:16px;min-width:0}
+li .f{grid-column:1;font-size:13px;color:var(--gold-dk);font-variant-numeric:tabular-nums;word-break:break-all}
+li button{grid-row:1/span 3;grid-column:2}
+.empty{padding:22px;text-align:center;border:1px dashed var(--gold);border-radius:4px;color:var(--ink-soft);font-style:italic}
+.howto{font-size:16px;color:var(--ink-soft)}
+code{font-family:ui-monospace,Consolas,monospace;font-size:14px;background:rgba(184,144,47,.15);padding:1px 5px;border-radius:3px;color:var(--ink);word-break:break-all}
+@media (max-width:480px){li{grid-template-columns:1fr}li button{grid-row:auto;grid-column:1;justify-self:start;margin-top:6px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="rule"><i></i></div>
+    <div class="kick">The Ultimate</div>
+    <h1>DnDMaker Downloads</h1>
+    <div class="rule"><i></i></div>
+    <p class="sub" id="sub"></p>
+    <div class="lang" role="group" aria-label="Sprache / Language">
+      <span aria-hidden="true">🌐</span>
+      <button type="button" id="lang-de" aria-pressed="true">Deutsch</button>
+      <button type="button" id="lang-en" aria-pressed="false">English</button>
+    </div>
+  </header>
+
+  <div class="actions">
+    <button class="secondary" id="homeBtn" type="button" aria-expanded="false" aria-controls="homeBox"></button>
+    <button class="primary" id="zipAll" disabled></button>
+  </div>
+  <div class="home" id="homeBox" hidden>
+    <strong id="homeTitle"></strong>
+    <span id="homeText"></span>
+    <div class="row"><code id="homePath"></code><button class="secondary" id="homeCopy" type="button"></button></div>
+  </div>
+  <div class="meta" id="meta"></div>
+  <div class="status" id="status" role="status"></div>
+
+  <section>
+    <h2 id="h-tools"></h2>
+    <ul id="list"></ul>
+  </section>
+
+  <section class="howto">
+    <h2 id="h-howto"></h2>
+    <span id="howto1"></span><br><br>
+    <strong id="howto2a"></strong> <span id="howto2b"></span>
+  </section>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+  const TX = {
+    de: {
+      sub: 'Alle Skripte und Tools aus deinem DnD-Projekt an einem Ort. Ein Klick lädt alles als ZIP, entpacke es nach ',
+      home: '🏠 Hauptmenü', homeTitle: 'Zum Hauptmenü (Startseite)',
+      homeText: 'Die Startseite liegt auf deinem Rechner. Diese Seite in der Claude-App darf lokale Dateien nicht selbst öffnen. Kopiere deshalb den Pfad, füge ihn in die Adresszeile von Edge oder Chrome ein und drücke Enter. Oder doppelklicke DND5e_Maker.html im Explorer.',
+      copy: '📋 Pfad kopieren', copied: 'Pfad kopiert – jetzt in die Adresszeile des Browsers einfügen.', copyFail: 'Kopieren nicht möglich – der Pfad ist markiert, kopiere ihn mit Strg+C.',
+      zip: '📦 Alle herunterladen (ZIP)', tools: 'Enthaltene Tools', howto: 'So bleibt der Ordner aktuell',
+      howto1: 'Sobald in einer Sitzung dieses Projekts ein neues oder geändertes Skript entsteht, legt Claude es hier ab und erhöht die Version oben. Lade danach einfach erneut das ZIP herunter und überschreibe den alten Stand.',
+      howto2a: 'Ohne ZIP:', howto2b: 'Sag Claude in einer Sitzung dieses Projekts „Aktualisiere meinen DnDMaker-Ordner“. Claude kopiert dann den neuesten Stand direkt als normalen Ordner auf den verknüpften Rechner. Neuere Dateien im Ordner werden dabei nie ungefragt überschrieben.',
+      loading: 'Lade Liste …', loadFail: 'Liste konnte nicht geladen werden.',
+      empty: 'Noch keine Tools abgelegt. Hänge Claude die Dateien aus deinem DnDMaker-Ordner an, dann erscheinen sie hier.',
+      one: ' Datei', many: ' Dateien', version: 'Version', updated: 'zuletzt aktualisiert am', state: 'Stand',
+      single: '⬇ Einzeln laden', zipOnly: 'nur im ZIP', clock: ' Uhr',
+      noDl: 'Downloads sind in dieser Ansicht nicht verfügbar. Öffne die Seite in der Claude-App.',
+      noZip: 'ZIP-Bibliothek konnte nicht geladen werden. Bitte Seite neu laden.',
+      packing: (i,n) => 'Packe '+i+' von '+n+' …', prep: n => 'Bereite '+n+' vor …', saved: f => 'Gespeichert: '+f,
+      zipSaved: s => 'ZIP gespeichert. Entpacken und alte Dateien überschreiben. Die Version steht im Namen der Textdatei DnDMaker_'+s+'.txt.',
+      declined: 'Download abgebrochen.', badExt: 'Dieser Dateityp kann hier nicht einzeln geladen werden – nutze das ZIP.',
+      busy: 'Es ist schon ein Download-Dialog offen. Bitte kurz warten.', fail: 'Download nicht möglich: ', unknown: 'unbekannter Fehler', missing: ' fehlt',
+      rmTitle: 'DnDMaker – Version ', rmFiles: 'Enthaltene Dateien:',
+      rmStart: 'Starte mit DND5e_Maker.html (Doppelklick) – Startseite und alle Tools in einer Datei. Die Einzeldateien funktionieren weiter über DND5e_Startseite.html (braucht landing-config.js im selben Ordner).',
+      rmNew: 'Neuer Stand: DnDMaker Downloads in der Claude-App, Projekt „DnD“.', rmName: 'unbekannt', dec: ','
+    },
+    en: {
+      sub: 'All scripts and tools from your DnD project in one place. One click downloads everything as a ZIP; unpack it to ',
+      home: '🏠 Main menu', homeTitle: 'Back to the main menu (home page)',
+      homeText: 'The home page is on your computer. This page in the Claude app is not allowed to open local files itself. Copy the path, paste it into the address bar of Edge or Chrome and press Enter. Or double-click DND5e_Maker.html in File Explorer.',
+      copy: '📋 Copy path', copied: 'Path copied – now paste it into the browser address bar.', copyFail: 'Copying is not possible – the path is selected, copy it with Ctrl+C.',
+      zip: '📦 Download all (ZIP)', tools: 'Included tools', howto: 'Keeping your folder up to date',
+      howto1: 'Whenever a session in this project creates a new or changed script, Claude adds it here and raises the version above. Just download the ZIP again and overwrite the old files.',
+      howto2a: 'Without a ZIP:', howto2b: 'Tell Claude in a session of this project “Update my DnDMaker folder”. Claude then copies the latest version straight into the folder on the linked computer as a normal folder. Newer files in the folder are never overwritten without asking.',
+      loading: 'Loading list …', loadFail: 'The list could not be loaded.',
+      empty: 'No tools added yet. Attach the files from your DnDMaker folder in a chat with Claude and they will appear here.',
+      one: ' file', many: ' files', version: 'Version', updated: 'last updated', state: 'updated',
+      single: '⬇ Download', zipOnly: 'ZIP only', clock: '',
+      noDl: 'Downloads are not available in this view. Open the page in the Claude app.',
+      noZip: 'The ZIP library could not be loaded. Please reload the page.',
+      packing: (i,n) => 'Packing '+i+' of '+n+' …', prep: n => 'Preparing '+n+' …', saved: f => 'Saved: '+f,
+      zipSaved: s => 'ZIP saved. Unpack it and overwrite the old files. The version is in the name of the text file DnDMaker_'+s+'.txt.',
+      declined: 'Download cancelled.', badExt: 'This file type cannot be downloaded on its own here – use the ZIP.',
+      busy: 'A download dialog is already open. Please wait a moment.', fail: 'Download failed: ', unknown: 'unknown error', missing: ' is missing',
+      rmTitle: 'DnDMaker – version ', rmFiles: 'Included files:',
+      rmStart: 'Start with DND5e_Maker.html (double-click) – home page and all tools in one file. The separate files still work via DND5e_Startseite.html (needs landing-config.js in the same folder).',
+      rmNew: 'Latest version: DnDMaker Downloads in the Claude app, project “DnD”.', rmName: 'unknown', dec: '.'
+    }
+  };
+  let lang = 'de';
+  try { const h = (location.hash||'').slice(1); if (h === 'en' || h === 'de') lang = h; else { const s = localStorage.getItem('dl.lang'); if (s === 'en' || s === 'de') lang = s; } } catch(e) {}
+  const t = k => TX[lang][k];
+
+  let tools = [], dl = null, manifest = null, stampId = '', loadFailed = false;
+  const HOME = 'C:\\Users\\justi\\OneDrive\\Desktop\\DND\\DnDMaker\\DND5e_Maker.html';
+  const status = s => { $('status').textContent = s || ''; };
+  const pad = n => String(n).padStart(2,'0');
+  const when = s => {
+    if(!s) return '–'; const m = /^(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2})(?::(\d{2}))?)?/.exec(s); if(!m) return s;
+    const time = m[4] ? m[4]+':'+m[5]+(m[6]?':'+m[6]:'') : '';
+    if (lang === 'en') return m[1]+'-'+m[2]+'-'+m[3] + (time ? ', '+time : '');
+    return m[3]+'.'+m[2]+'.'+m[1] + (time ? ', '+time+t('clock') : '');
+  };
+  const fmt = b => b == null ? '' : b > 1048576 ? (b/1048576).toFixed(1).replace('.', t('dec'))+' MB' : Math.max(1,Math.round(b/1024))+' KB';
+  const nameOf = x => (lang === 'en' && x.name_en) || x.name;
+  const descOf = x => (lang === 'en' && x.desc_en) || x.desc || '';
+
+  function readme(){
+    const lines = [t('rmTitle') + when(manifest.updated), '', t('rmFiles')];
+    tools.forEach(x => lines.push('- ' + x.file + '  (' + fmt(x.size) + ', ' + t('state') + ' ' + when(x.updated) + ')' + (descOf(x) ? '\r\n    ' + descOf(x) : '')));
+    lines.push('', t('rmStart'), t('rmNew'));
+    return lines.join('\r\n') + '\r\n';
+  }
+
+  function applyStatic(){
+    document.documentElement.lang = lang;
+    const sub = $('sub'); sub.textContent = t('sub');
+    const c = document.createElement('code'); c.textContent = 'C:\\Users\\justi\\OneDrive\\Desktop\\DND\\DnDMaker'; sub.append(c, '.');
+    $('homeBtn').textContent = t('home'); $('homeTitle').textContent = t('homeTitle'); $('homeText').textContent = t('homeText'); $('homeCopy').textContent = t('copy'); $('homePath').textContent = HOME;
+    $('zipAll').textContent = t('zip'); $('h-tools').textContent = t('tools'); $('h-howto').textContent = t('howto');
+    $('howto1').textContent = t('howto1'); $('howto2a').textContent = t('howto2a'); $('howto2b').textContent = t('howto2b');
+    $('lang-de').setAttribute('aria-pressed', String(lang === 'de')); $('lang-en').setAttribute('aria-pressed', String(lang === 'en'));
+  }
+
+  function render(){
+    applyStatic();
+    if (!manifest){ $('meta').textContent = loadFailed ? t('loadFail') : t('loading'); return; }
+    tools = manifest.tools || [];
+    let list = $('list');
+    if(!tools.length){
+      const e = document.createElement('div'); e.className='empty'; e.id='list'; e.textContent = t('empty'); list.replaceWith(e);
+    } else {
+      if (list.tagName !== 'UL'){ const u = document.createElement('ul'); u.id='list'; list.replaceWith(u); list = u; }
+      list.textContent = '';
+      tools.forEach(x=>{
+        const li = document.createElement('li');
+        const n = document.createElement('div'); n.className='n'; n.textContent = nameOf(x);
+        const d = document.createElement('div'); d.className='d'; d.textContent = descOf(x);
+        const f = document.createElement('div'); f.className='f';
+        f.textContent = x.file + (x.size ? ' · '+fmt(x.size) : '') + (x.updated ? ' · '+t('state')+' '+when(x.updated) : '');
+        let b;
+        if(/\.(html|zip|json|txt|md|pdf|csv)$/i.test(x.file)){
+          b = document.createElement('button'); b.className='secondary'; b.textContent = t('single');
+          b.addEventListener('click',()=>saveOne(x));
+        } else { b = document.createElement('span'); b.className='f'; b.textContent = t('zipOnly'); b.style.gridRow='1'; b.style.gridColumn='2'; }
+        li.append(n,b,d,f); list.append(li);
+      });
+    }
+    stampId = (manifest.updated||'').slice(0,19).replace('T','_').replace(/:/g,'-');
+    $('meta').textContent = tools.length + (tools.length===1?t('one'):t('many')) + ' · ' + t('version') + ' DnDMaker_' + stampId + ' · ' + t('updated') + ' ' + when(manifest.updated);
+    $('zipAll').disabled = !tools.length;
+  }
+
+  function setLang(l){
+    if (l === lang) return; lang = l; status('');
+    try { localStorage.setItem('dl.lang', l); } catch(e) {}
+    try { history.replaceState(null, '', '#' + l); } catch(e) { try { location.hash = l; } catch(_) {} }
+    render();
+  }
+  $('homeBtn').addEventListener('click', () => {
+    const box = $('homeBox'); box.hidden = !box.hidden; $('homeBtn').setAttribute('aria-expanded', String(!box.hidden));
+  });
+  $('homeCopy').addEventListener('click', () => {
+    const sel = () => { try { const r = document.createRange(); r.selectNodeContents($('homePath')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); } catch(e) {} };
+    try {
+      navigator.clipboard.writeText(HOME).then(() => status(t('copied')), () => { sel(); status(t('copyFail')); });
+    } catch(e) { sel(); status(t('copyFail')); }
+  });
+  $('lang-de').addEventListener('click', () => setLang('de'));
+  $('lang-en').addEventListener('click', () => setLang('en'));
+  window.addEventListener('hashchange', () => { const h = location.hash.slice(1); if (h === 'en' || h === 'de') setLang(h); });
+
+  async function getDl(){
+    if(dl) return dl;
+    try{ dl = await window.claude?.use?.('downloads'); }catch(e){ dl = null; }
+    return dl;
+  }
+  const enc = p => p.split('/').map(encodeURIComponent).join('/');
+  async function fetchBlob(x){
+    if(x.bundle){
+      const z = new JSZip();
+      for(const p of x.parts){
+        const r = await fetch('tools/' + enc(x.bundle + '/' + p));
+        if(!r.ok) throw new Error(p + t('missing'));
+        z.file(p, await r.blob());
+      }
+      return z.generateAsync({type:'blob',compression:'DEFLATE'});
+    }
+    const r = await fetch('tools/' + enc(x.file));
+    if(!r.ok) throw new Error(x.file + t('missing'));
+    return r.blob();
+  }
+  function explain(e){
+    if(e && e.code==='declined') return t('declined');
+    if(e && e.code==='rejected_extension') return t('badExt');
+    if(e && e.code==='rate_limited') return t('busy');
+    return t('fail') + ((e && e.message) || t('unknown'));
+  }
+  async function saveOne(x){
+    const d = await getDl();
+    if(!d){ status(t('noDl')); return; }
+    try{ status(t('prep')(nameOf(x))); const blob = await fetchBlob(x);
+      await d.save({filename: x.file.split('/').pop(), data: blob}); status(t('saved')(x.file));
+    }catch(e){ status(explain(e)); }
+  }
+  $('zipAll').addEventListener('click', async ()=>{
+    const d = await getDl();
+    if(!d){ status(t('noDl')); return; }
+    if(!window.JSZip){ status(t('noZip')); return; }
+    const btn = $('zipAll'); btn.disabled = true;
+    try{
+      const zip = new JSZip(); const root = zip.folder('DnDMaker');
+      for(let i=0;i<tools.length;i++){ status(t('packing')(i+1, tools.length)); root.file(tools[i].file, await fetchBlob(tools[i])); }
+      root.file('DnDMaker_' + (stampId || t('rmName')) + '.txt', readme());
+      const blob = await zip.generateAsync({type:'blob',compression:'DEFLATE'});
+      await d.save({filename:'DnDMaker.zip', data: blob});
+      status(t('zipSaved')(stampId));
+    }catch(e){ status(explain(e)); }
+    btn.disabled = !tools.length;
+  });
+
+  render();
+  fetch('manifest.json',{cache:'no-store'}).then(r=>r.json()).then(m => { manifest = m; render(); })
+    .catch(()=>{ loadFailed = true; manifest = null; render(); });
+})();
+</script>
+
+</body></html>

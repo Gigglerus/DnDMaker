@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Ultimate DND5e Maker</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpolygon points='50,3 91,27 91,73 50,97 9,73 9,27' fill='%236e1a1a' stroke='%23d4a845' stroke-width='5'/%3E%3C/svg%3E">
+<style>
+/*__FONTS__*/
+:root{
+  --parch-in:#f6ecd2; --parch-out:#e9d6a8; --parch-card:#fbf4e1;
+  --gold:#b8902f; --gold-dk:#a07a2a; --gold-lt:#d9b862;
+  --burg:#6e1a1a; --burg-2:#8a2222; --burg-lt:#a83a2e;
+  --ink:#3b2416; --ink-2:#5a3a22; --ink-3:#7a5a3a;
+  --cream:#f5e9cc; --line:#cdb27a; --ok:#3f6b2a; --bar-h:46px;
+  --f-kicker:'Cinzel','EB Kicker',serif; --f-title:'Almendra','Fondamento','EB Title',serif; --f-body:'Crimson Text','EB Body','Book Antiqua',Georgia,serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{font-family:var(--f-body);color:var(--ink);font-size:17px;line-height:1.4;background-color:var(--parch-out);
+  background-image:radial-gradient(ellipse at center,var(--parch-in) 0%,#f3e5c3 45%,var(--parch-out) 100%);background-attachment:fixed;min-height:100vh}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;background:
+  radial-gradient(ellipse at center,transparent 55%,rgba(120,80,30,.22) 100%),
+  url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .45  0 0 0 0 .3  0 0 0 0 .12  0 0 0 .07 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");}
+.corner{position:fixed;width:150px;height:150px;z-index:1;pointer-events:none;opacity:.95}
+.corner.tl{top:6px;left:6px}.corner.tr{top:6px;right:6px;transform:scaleX(-1)}
+.corner.bl{bottom:6px;left:6px;transform:scaleY(-1)}.corner.br{bottom:6px;right:6px;transform:scale(-1,-1)}
+main{position:relative;z-index:2;min-height:100vh;display:flex;flex-direction:column;align-items:center;text-align:center;padding:44px 20px 50px;gap:10px}
+button,input{font-family:inherit;font-size:inherit;color:inherit}
+h1,h2,h3{margin:0;font-weight:normal}
+[hidden]{display:none!important}
+.divider{display:block;margin:0 auto;width:min(520px,80vw);height:26px}
+.kicker{font-family:var(--f-kicker);color:var(--gold-dk);letter-spacing:.42em;font-size:17px;text-transform:uppercase;padding-left:.42em}
+.title{font-family:var(--f-title);color:var(--burg);font-size:clamp(40px,6vw,66px);line-height:1.05;text-shadow:0 2px 0 rgba(255,245,215,.8),0 3px 6px rgba(110,26,26,.25)}
+.logo{filter:drop-shadow(0 4px 6px rgba(80,30,10,.3))}
+.tagline{max-width:640px;font-size:19px;margin:6px 0 0;font-style:italic;color:var(--ink-2)}
+.begins{font-style:italic;font-weight:600;color:var(--burg);font-size:19px;margin:2px 0 6px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5em;font-weight:700;border-radius:4px;padding:.55em 1.1em;cursor:pointer;
+  background:var(--cream);color:var(--ink);border:2px solid var(--ink);text-decoration:none;
+  box-shadow:0 2px 0 rgba(59,36,22,.25),0 4px 10px rgba(59,36,22,.18);transition:transform .08s,box-shadow .12s,filter .12s;font-size:16px;line-height:1.15;white-space:nowrap}
+.btn:hover{filter:brightness(1.04);box-shadow:0 2px 0 rgba(59,36,22,.25),0 6px 14px rgba(59,36,22,.25)}
+.btn:active{transform:translateY(1px)}
+.btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.btn.primary{background:linear-gradient(180deg,var(--burg-lt) 0%,var(--burg-2) 40%,var(--burg) 100%);color:#f8ecd0;border:1px solid #4a0f0f;text-shadow:0 1px 0 rgba(0,0,0,.35)}
+.btn.small{padding:.3em .7em;font-size:14px;border-width:1.5px}
+.btn.ghost{background:transparent;border-color:var(--line);box-shadow:none;font-weight:600}
+.btn.warn{filter:grayscale(.6)}
+.lang{display:inline-flex;align-items:center;gap:.4em;border:1.5px solid var(--gold);border-radius:4px;padding:3px;background:rgba(251,244,225,.7)}
+.lang .globe{padding:0 .3em}
+.lang button{border:0;background:transparent;padding:.2em .7em;border-radius:3px;cursor:pointer;font-weight:600;color:var(--ink-2)}
+.lang button.on{background:linear-gradient(180deg,var(--burg-2),var(--burg));color:#f8ecd0}
+.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center}
+/* Werkzeug-Karten */
+.tools{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:20px;width:min(1000px,100%);margin-top:22px}
+@media (min-width:980px){.tools{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.tool{position:relative;background:linear-gradient(180deg,var(--parch-card),#f4e7c6);border:2px solid var(--ink);border-radius:6px;padding:26px 24px 22px;
+  box-shadow:0 3px 0 rgba(59,36,22,.2),0 10px 24px rgba(59,36,22,.18);display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center}
+.tool::before{content:"";position:absolute;inset:6px;border:1px solid var(--gold);border-radius:3px;pointer-events:none;opacity:.7}
+.tool .emb{font-size:38px;line-height:1;width:72px;height:72px;display:grid;place-items:center;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#a42d2a,#5a1212);border:2px solid #d4a845;box-shadow:0 3px 8px rgba(80,30,10,.35)}
+.tool .tk{font-family:var(--f-kicker);color:var(--gold-dk);letter-spacing:.32em;font-size:12px;text-transform:uppercase;margin-top:6px}
+.tool h2{font-family:var(--f-title);color:var(--burg);font-size:27px;line-height:1.05;text-shadow:0 1px 0 rgba(255,245,215,.8)}
+.tool p{margin:2px 0 4px;font-style:italic;color:var(--ink-2)}
+.tool ul{list-style:none;padding:0;margin:4px 0 10px;text-align:left;width:100%}
+.tool li{padding:3px 0 3px 22px;position:relative;border-bottom:1px dotted var(--line)}
+.tool li:last-child{border-bottom:0}
+.tool li::before{content:"◆";position:absolute;left:4px;top:4px;color:var(--burg-2);font-size:11px}
+.tool .open{margin-top:auto;font-size:18px;padding:.75em 1.4em}
+.tool .run{font-size:13px;font-style:italic;color:var(--ok);min-height:1.2em}
+.refs{display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:26px;width:min(620px,100%)}
+.refs .divider{margin-bottom:6px}
+.btn.ref{font-size:19px;padding:.8em 1.6em;border-width:2px;background:linear-gradient(180deg,#fbf4e1,var(--cream))}
+.btn.ref .ico{font-size:1.15em}
+.refs .refsub{font-size:14.5px;font-style:italic;color:var(--ink-2)}
+.refs .chk{font-size:13px;font-style:italic;color:var(--ink-3);min-height:1.2em}
+.refs .chk.bad{color:var(--burg-2);font-weight:700;font-style:normal}
+.refs .path{font-size:12.5px;color:var(--ink-3);word-break:break-all}
+.chk:empty{display:none}
+.footnote{font-size:13px;color:var(--ink-3);font-style:italic;margin-top:22px;max-width:640px}
+/* Einstellungen */
+.overlay{position:fixed;inset:0;z-index:30;background:rgba(40,22,10,.55);display:none;align-items:center;justify-content:center;padding:16px}
+.overlay.on{display:flex}
+.dialog{background:linear-gradient(180deg,var(--parch-card),#efdfb8);border:3px double var(--ink);border-radius:6px;width:min(640px,100%);max-height:90vh;overflow:auto;padding:22px 24px;box-shadow:0 20px 50px rgba(0,0,0,.4);text-align:left}
+.dialog h3{font-family:var(--f-kicker);color:var(--burg);letter-spacing:.14em;text-transform:uppercase;font-size:18px;margin-bottom:6px}
+.dialog .hint{font-size:14.5px;font-style:italic;color:var(--ink-2);margin:0 0 12px}
+.field{margin:12px 0}
+.field label{display:block;font-weight:700;margin-bottom:4px}
+.field input{width:100%;padding:.45em .6em;border:1.5px solid var(--ink-3);border-radius:4px;background:#fffaf0;font-size:15px}
+.field input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
+.field small{display:block;color:var(--ink-3);font-size:13px;margin-top:3px}
+.vers{list-style:none;margin:4px 0 0;padding:0;font-size:14.5px}
+.vers li{display:flex;justify-content:space-between;gap:12px;padding:3px 0;border-bottom:1px dotted var(--line)}
+.vers li span:last-child{color:var(--ink-3);font-variant-numeric:tabular-nums;white-space:nowrap}
+.vers-h{margin:16px 0 2px;font-weight:700}
+.dlg-actions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:16px}
+.saved-msg{color:var(--ok);font-weight:700;font-size:14px;align-self:center;margin-right:auto;opacity:0;transition:opacity .2s}
+.saved-msg.on{opacity:1}
+/* Leiste und Bühne: sichtbar, sobald ein Tool geöffnet ist */
+#bar{position:fixed;top:0;left:0;right:0;height:var(--bar-h);z-index:20;display:flex;align-items:stretch;gap:4px;padding:5px 8px 0;
+  background:linear-gradient(180deg,#7d2020,var(--burg) 60%,#551212);border-bottom:2px solid var(--gold);box-shadow:0 2px 8px rgba(40,15,5,.35)}
+#bar .tabs{display:flex;align-items:stretch;gap:3px;flex:1;min-width:0;overflow-x:auto;scrollbar-width:none}
+#bar .tabs::-webkit-scrollbar{display:none}
+#bar button{display:inline-flex;align-items:center;gap:.4em;border:1px solid rgba(217,184,98,.45);border-bottom:0;border-radius:5px 5px 0 0;
+  background:rgba(0,0,0,.18);color:#f3e2b8;cursor:pointer;padding:0 .8em;font-size:15.5px;font-weight:600;white-space:nowrap;line-height:1}
+#bar button:hover{background:rgba(255,235,190,.16);color:#fff5d8}
+#bar button:focus-visible{outline:2px solid var(--gold-lt);outline-offset:-3px}
+#bar button.on{background:linear-gradient(180deg,#fbf4e1,var(--parch-in));color:var(--burg);border-color:var(--gold);font-weight:700}
+#bar button .dot{width:6px;height:6px;border-radius:50%;background:var(--gold-lt);display:none}
+#bar button.live .dot{display:block}
+#bar button.on .dot{background:var(--ok)}
+#bar #homeBtn{font-family:var(--f-kicker);letter-spacing:.08em;margin-right:6px}
+#bar #reloadBtn{margin-left:4px;padding:0 .7em}
+#stage{position:fixed;top:var(--bar-h);left:0;right:0;bottom:0;z-index:15;background:var(--parch-out)}
+#stage iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:none;background:var(--parch-out)}
+#stage iframe.on{display:block}
+body.in-tool{overflow:hidden}
+body.in-tool main,body.in-tool .corner{display:none}
+@media (max-width:1040px){#bar button[data-go]:not(.on) .lbl{display:none}#bar button{padding:0 .65em}}
+@media (max-width:640px){.corner{width:70px;height:70px}main{padding-top:30px}#bar #homeBtn .lbl{display:none}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<nav id="bar" hidden aria-label="DND5e Maker"></nav>
+<div id="stage" hidden></div>
+<main id="app"></main>
+<div class="overlay" id="ov" role="dialog" aria-modal="true" aria-labelledby="dlgT"><div class="dialog" id="dlg"></div></div>
+<script>window.DND_BUILD = /*__BUILD__*/null;
+window.DND_TOOLS = /*__TOOLS__*/{};</script>
+<script>
+(function () {
+  'use strict';
+  var TOOLS = window.DND_TOOLS, BUILD = window.DND_BUILD || {};
+  var PHB_DEFAULT = '..\\D&D 5e - Players Handbook.pdf';
+  var PHB_FALLBACK = 'C:\\Users\\justi\\OneDrive\\Desktop\\DND\\D&D 5e - Players Handbook.pdf';
+  var PHB_NAME = 'D&D 5e - Players Handbook.pdf';
+  var HOME_FILES = ['dnd5e_startseite.html', 'dnd5e_maker.html'];
+  var KEY = 'dnd5e-landing-v1';   // derselbe Speicher wie die alte Startseite (Sprache, PHB-Pfad)
+
+  var T = {
+    de: {
+      kicker: 'THE ULTIMATE', title: 'DND5e Maker',
+      tagline: 'Deine Werkstatt für Dungeons & Dragons 5e: Erschaffe Helden mit fertigem Charakterbogen, führe sie Runde für Runde durch den Kampf, stelle ihnen ausgewogene Begegnungen entgegen und gestalte die Welt, in der sie reisen.',
+      begins: 'Dein Abenteuer beginnt hier.',
+      settings: 'Einstellungen', open: 'Öffnen', resume: 'Weiter', running: '● geöffnet – dein Stand bleibt erhalten',
+      home: 'Startseite', homeTip: 'Zur Startseite – geöffnete Tools laufen weiter',
+      reloadTip: 'Dieses Tool neu laden', reloadAsk: 'Dieses Tool neu laden? Eingaben, die du im Tool noch nicht gespeichert hast, gehen dabei verloren.',
+      phb: 'Players Handbook öffnen', phbSub: 'Das Regelwerk als PDF, öffnet sich in einem neuen Tab.',
+      phbL: 'Datei: Players Handbook (PDF)', phbS: 'Relativ zu dieser Datei. Standard: eine Ebene höher im DND-Ordner (..\\). Leer = Standard.',
+      creatorK: 'Für Spieler', creatorT: 'DND5e Creator', creatorN: 'Creator',
+      creatorD: 'Schritt für Schritt zum fertigen Helden.',
+      creatorF: ['Rassen, Unterrassen, Klassen & Hintergründe', 'Point Buy, Zufallsnamen, Alter & Größe', 'Zauber, Ausrüstung & Handel', 'Ausfüllbarer PDF-Charakterbogen', 'Aufleveln & Bearbeiten per PDF'],
+      managerK: 'Am Spieltisch', managerT: 'DND5e Charakterverwaltung', managerN: 'Charaktere',
+      managerD: 'Deine Helden Runde für Runde im Griff.',
+      managerF: ['Import des Charakterbogens (PDF)', 'Aktionen, Bonusaktion & Reaktion je Runde', 'Würfeln mit Effekten, Vorteil & Krits', 'TP, Zustände, Konzentration & Rasten', 'Klassenressourcen & Zauberplätze automatisch'],
+      encounterK: 'Für Spielleiter', encounterT: 'DND5e Encounter Builder', encounterN: 'Encounter',
+      encounterD: 'Ausgewogene Begegnungen nach den 5e-Regeln.',
+      encounterF: ['Vorschläge nach Gruppe, Stufe & Schwierigkeit', 'Live-Schwierigkeitsanzeige', 'Bestiarium mit allen Werten', 'Kampfansicht mit Würfeln & Auswertung', 'Begegnungen speichern & laden'],
+      forgeK: 'Für Kartenzeichner', forgeT: 'DND5e Kartenschmiede', forgeN: 'Kartenschmiede',
+      forgeD: 'Erschaffe Weltkarten und Stadtkarten.',
+      forgeF: ['Kontinente, Archipele & Gebirge – frei oder zufällig', 'Gelände, Flüsse, Straßen & Brücken', 'Städte aller Völker mit eigener Stadtkarte', 'Realistisch, künstlerisch oder gezeichnet', 'Export als Bild, PDF, SVG & Atlas-Projekt'],
+      worldK: 'Für Weltenbauer', worldT: 'DND5e Atlas', worldN: 'Atlas',
+      worldD: 'Deine Weltkarte mit lebendigen Orten.',
+      worldF: ['Karte laden (JPG, PNG, SVG) oder aus der Kartenschmiede', 'Städte automatisch erkennen', 'Orte mit Völkern, Reichtum & Einrichtungen', 'Läden & Orte (PoI) mit Stadtkarte', 'Beschriftungen, Export als Bild, Projekt & CSV'],
+      sessionK: 'Für den Spielabend', sessionT: 'DND5e Sessionverwaltung', sessionN: 'Sessions',
+      sessionD: 'Kampagne, Spielabende und Quests im Blick.',
+      sessionF: ['Charakterbögen (PDF) mit Notizen', 'Schnell-NSCs mit Name, Alter & Persönlichkeit', 'Karte mit eigenen Markern', 'Questlog mit Zielen, verknüpft mit Charakteren', 'Begegnungen aus dem Encounter Builder'],
+      foot: 'Alle Tools stecken in dieser einen Datei und laufen offline im Browser, ohne Installation. Über die Leiste oben wechselst du zwischen ihnen, ohne dass etwas verloren geht.',
+      dlgT: 'Einstellungen', dlgHint: 'Die Tools sind fest eingebaut – Ordner musst du nicht mehr einstellen. Nur das Players Handbook liegt als eigene PDF-Datei daneben.',
+      versH: 'Eingebaute Tools', built: 'Zusammengebaut am', state: 'Stand',
+      stdV: 'Standard', save: 'Speichern', reset: 'Zurücksetzen', close: 'Schließen', saved: '✓ Gespeichert',
+      missing: '⚠ PDF nicht gefunden – bitte über „⚙️ Einstellungen“ den Pfad eintragen.', clock: ' Uhr'
+    },
+    en: {
+      kicker: 'THE ULTIMATE', title: 'DND5e Maker',
+      tagline: 'Your workshop for Dungeons & Dragons 5e: create heroes with a finished character sheet, guide them through combat round by round, pit them against balanced encounters and shape the world they travel.',
+      begins: 'Your adventure begins here.',
+      settings: 'Settings', open: 'Open', resume: 'Continue', running: '● open – your progress is kept',
+      home: 'Home', homeTip: 'Back to the home page – open tools keep running',
+      reloadTip: 'Reload this tool', reloadAsk: 'Reload this tool? Anything you have not saved inside the tool will be lost.',
+      phb: 'Open Players Handbook', phbSub: 'The rulebook as PDF, opens in a new tab.',
+      phbL: 'File: Players Handbook (PDF)', phbS: 'Relative to this file. Default: one level up in the DND folder (..\\). Empty = default.',
+      creatorK: 'For players', creatorT: 'DND5e Creator', creatorN: 'Creator',
+      creatorD: 'Step by step to a finished hero.',
+      creatorF: ['Races, subraces, classes & backgrounds', 'Point buy, random names, age & height', 'Spells, equipment & shopping', 'Fillable PDF character sheet', 'Level up & edit via PDF'],
+      managerK: 'At the table', managerT: 'DND5e Character Manager', managerN: 'Characters',
+      managerD: 'Run your heroes round by round.',
+      managerF: ['Import your character sheet (PDF)', 'Action, bonus action & reaction per round', 'Rolls with effects, advantage & crits', 'HP, conditions, concentration & rests', 'Class resources & spell slots tracked automatically'],
+      encounterK: 'For game masters', encounterT: 'DND5e Encounter Builder', encounterN: 'Encounter',
+      encounterD: 'Balanced encounters by the 5e rules.',
+      encounterF: ['Suggestions by party, level & difficulty', 'Live difficulty rating', 'Bestiary with full stat blocks', 'Combat view with dice & auto-resolution', 'Save & load encounters'],
+      forgeK: 'For map makers', forgeT: 'DND5e Map Forge', forgeN: 'Map Forge',
+      forgeD: 'Create world maps and city maps. (Tool in German)',
+      forgeF: ['Continents, archipelagos & mountains – freehand or random', 'Terrain, rivers, roads & bridges', 'Cities of every people with their own city map', 'Realistic, artistic or hand-drawn', 'Export as image, PDF, SVG & Atlas project'],
+      worldK: 'For world builders', worldT: 'DND5e Atlas', worldN: 'Atlas',
+      worldD: 'Your world map with living places. (Tool in German)',
+      worldF: ['Load a map (JPG, PNG, SVG) or one from the Map Forge', 'Detect cities automatically', 'Places with peoples, wealth & venues', 'Shops & places (PoI) with a city map', 'Labels, export as image, project & CSV'],
+      sessionK: 'For game night', sessionT: 'DND5e Session Manager', sessionN: 'Sessions',
+      sessionD: 'Campaign, sessions and quests at a glance.',
+      sessionF: ['Character sheets (PDF) with notes', 'Quick NPCs with name, age & personality', 'Map with your own markers', 'Quest log with objectives, linked to characters', 'Encounters from the Encounter Builder'],
+      foot: 'All tools live in this single file and run offline in your browser, no installation needed. Use the bar at the top to switch between them without losing anything.',
+      dlgT: 'Settings', dlgHint: 'The tools are built in – there are no folders to set up any more. Only the Players Handbook is a separate PDF next to this file.',
+      versH: 'Built-in tools', built: 'Assembled on', state: 'updated',
+      stdV: 'Default', save: 'Save', reset: 'Reset', close: 'Close', saved: '✓ Saved',
+      missing: '⚠ PDF not found – please enter its path via “⚙️ Settings”.', clock: ''
+    }
+  };
+  var ICON = { creator: '⚔️', manager: '🛡️', encounter: '🐉', forge: '🏝️', world: '🗺️', session: '📅' };
+  var IDS = ['creator', 'manager', 'encounter', 'forge', 'world', 'session'].filter(function (id) { return TOOLS[id]; });
+
+  // ---------- Speicher ----------
+  function load() { try { return JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { return {}; } }
+  // Vor dem Schreiben neu lesen: Die alte Startseite und die Sessionverwaltung nutzen denselben Eintrag.
+  function store(patch) { try { var o = load(); patch(o); localStorage.setItem(KEY, JSON.stringify(o)); U = o; return true; } catch (e) { return false; } }
+  var U = load();
+  var lang = U.lang === 'en' ? 'en' : 'de';
+  function L(k) { return T[lang][k]; }
+  function phbPath() { return (U.paths && U.paths.phb) || PHB_DEFAULT; }
+  function toUrl(p) {
+    if (/^[a-z]+:\/\//i.test(p)) return p;
+    var s = p.replace(/\\/g, '/');
+    if (/^[a-zA-Z]:\//.test(s)) s = 'file:///' + s;
+    else if (/^\/\//.test(s)) s = 'file:' + s;
+    return encodeURI(s).replace(/#/g, '%23').replace(/\?/g, '%3F');
+  }
+  function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function when(s) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2}))?/.exec(s || ''); if (!m) return '–';
+    var t = m[4] ? ', ' + m[4] + ':' + m[5] : '';
+    return lang === 'en' ? m[1] + '-' + m[2] + '-' + m[3] + t : m[3] + '.' + m[2] + '.' + m[1] + t + (t ? L('clock') : '');
+  }
+
+  // ---------- SVG-Ornamente (wie im Creator / Encounter Builder) ----------
+  var SVG = {
+    d20: function (sz) {
+      return '<svg viewBox="0 0 100 100" width="' + sz + '" height="' + sz + '" aria-hidden="true"><defs>' +
+        '<linearGradient id="dg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a42d2a"/><stop offset="1" stop-color="#5a1212"/></linearGradient>' +
+        '<linearGradient id="dg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8f2321"/><stop offset="1" stop-color="#4a0d0d"/></linearGradient></defs>' +
+        '<g stroke="#d4a845" stroke-width="2.2" stroke-linejoin="round">' +
+        '<polygon points="50,3 91,27 91,73 50,97 9,73 9,27" fill="url(#dg2)"/>' +
+        '<polygon points="50,3 9,27 24,66" fill="#7a1b1b"/><polygon points="50,3 91,27 76,66" fill="#6a1515"/>' +
+        '<polygon points="9,27 9,73 24,66" fill="#5a1111"/><polygon points="91,27 91,73 76,66" fill="#4f0e0e"/>' +
+        '<polygon points="24,66 76,66 50,97" fill="#5e1212"/><polygon points="9,73 24,66 50,97" fill="#4a0d0d"/><polygon points="91,73 76,66 50,97" fill="#420b0b"/>' +
+        '<polygon points="50,3 76,66 24,66" fill="url(#dg1)"/></g>' +
+        '<text x="50" y="57" text-anchor="middle" font-family="EB Kicker, Georgia, serif" font-size="22" font-weight="700" fill="#f0cf6a">20</text></svg>';
+    },
+    divider: function () {
+      var g = '#b8902f';
+      return '<svg class="divider" viewBox="0 0 520 26" aria-hidden="true"><defs>' +
+        '<linearGradient id="dvl" x1="0" x2="1"><stop offset="0" stop-color="' + g + '" stop-opacity="0"/><stop offset="1" stop-color="' + g + '"/></linearGradient>' +
+        '<linearGradient id="dvr" x1="1" x2="0"><stop offset="0" stop-color="' + g + '" stop-opacity="0"/><stop offset="1" stop-color="' + g + '"/></linearGradient></defs>' +
+        '<g fill="none" stroke-width="1.7" stroke-linecap="round">' +
+        '<path d="M8 13 H214" stroke="url(#dvl)"/><path d="M306 13 H512" stroke="url(#dvr)"/>' +
+        '<path d="M214 13 C224 2 238 2 240 9 C241 14 234 15 233 11" stroke="' + g + '"/><path d="M214 13 C224 24 238 24 240 17 C241 12 234 11 233 15" stroke="' + g + '"/>' +
+        '<path d="M306 13 C296 2 282 2 280 9 C279 14 286 15 287 11" stroke="' + g + '"/><path d="M306 13 C296 24 282 24 280 17 C279 12 286 11 287 15" stroke="' + g + '"/>' +
+        '<path d="M244 13 H250 M270 13 H276" stroke="' + g + '"/></g>' +
+        '<circle cx="196" cy="13" r="1.8" fill="' + g + '"/><circle cx="324" cy="13" r="1.8" fill="' + g + '"/>' +
+        '<path d="M260 2 L271 13 L260 24 L249 13Z" fill="#7a1d1d" stroke="' + g + '" stroke-width="1.5"/><path d="M260 7 L266 13 L260 19 L254 13Z" fill="none" stroke="#d4a845" stroke-width=".8" opacity=".8"/></svg>';
+    },
+    corner: function (cls) {
+      var g = '#b8902f';
+      return '<svg class="corner ' + cls + '" viewBox="0 0 150 150" aria-hidden="true"><g fill="none" stroke="' + g + '" stroke-linecap="round">' +
+        '<path d="M6 144 V34 Q6 6 34 6 H144" stroke-width="2.4"/>' +
+        '<path d="M15 118 V40 Q15 15 40 15 H118" stroke-width="1.2" opacity=".8"/>' +
+        '<path d="M34 6 C52 24 34 44 50 54 C62 61 72 48 64 41 C57 35 49 43 55 48" stroke-width="2"/>' +
+        '<path d="M6 34 C24 52 44 34 54 50 C61 62 48 72 41 64 C35 57 43 49 48 55" stroke-width="2"/>' +
+        '<path d="M60 22 C74 18 86 24 96 16 M22 60 C18 74 24 86 16 96" stroke-width="1.4"/>' +
+        '<path d="M96 16 C100 10 108 10 110 15 M16 96 C10 100 10 108 15 110" stroke-width="1.4"/>' +
+        '<path d="M70 10 q6 6 0 12 M10 70 q6 6 12 0" stroke-width="1.1"/></g>' +
+        '<path d="M15 8 L22 15 L15 22 L8 15Z" fill="#7a1d1d" stroke="' + g + '" stroke-width="1.3"/>' +
+        '<circle cx="120" cy="6" r="2.2" fill="' + g + '"/><circle cx="6" cy="120" r="2.2" fill="' + g + '"/></svg>';
+    }
+  };
+
+  // ---------- Startseite ----------
+  function toolCard(id) {
+    var live = !!frames[id];
+    return '<article class="tool" id="card_' + id + '"><div class="emb" aria-hidden="true">' + ICON[id] + '</div>' +
+      '<div class="tk">' + esc(L(id + 'K')) + '</div><h2>' + esc(L(id + 'T')) + '</h2>' +
+      '<p>' + esc(L(id + 'D')) + '</p><ul>' + L(id + 'F').map(function (f) { return '<li>' + esc(f) + '</li>'; }).join('') + '</ul>' +
+      '<a class="btn primary open" id="open_' + id + '" href="#' + id + '"><span>' + ICON[id] + '</span>' + esc(L(live ? 'resume' : 'open')) + '</a>' +
+      '<div class="run">' + (live ? esc(L('running')) : '') + '</div></article>';
+  }
+  function renderHome() {
+    document.documentElement.lang = lang;
+    document.getElementById('app').innerHTML =
+      SVG.divider() + '<div class="logo">' + SVG.d20(118) + '</div>' +
+      '<div class="kicker">' + L('kicker') + '</div><h1 class="title">' + L('title') + '</h1>' + SVG.divider() +
+      '<p class="tagline">' + esc(L('tagline')) + '</p><p class="begins">' + esc(L('begins')) + '</p>' +
+      '<div class="toolbar"><div class="lang" role="group" aria-label="Sprache / Language"><span class="globe">🌐</span>' +
+      '<button data-lang="de" class="' + (lang === 'de' ? 'on' : '') + '">Deutsch</button>' +
+      '<button data-lang="en" class="' + (lang === 'en' ? 'on' : '') + '">English</button></div>' +
+      '<button class="btn small" id="setBtn"><span>⚙️</span>' + esc(L('settings')) + '</button></div>' +
+      '<section class="tools">' + IDS.map(toolCard).join('') + '</section>' +
+      '<section class="refs">' + SVG.divider() +
+      '<a class="btn ref" id="open_phb" target="_blank" rel="noopener" href="' + esc(toUrl(phbPath())) + '"><span class="ico">📖</span>' + esc(L('phb')) + '</a>' +
+      '<div class="refsub">' + esc(L('phbSub')) + '</div>' +
+      '<div class="path" id="path_phb" hidden></div><div class="chk" id="chk_phb"></div></section>' +
+      '<p class="footnote">' + esc(L('foot')) + '</p>';
+    checkPhb();
+  }
+  function renderBar() {
+    document.getElementById('bar').innerHTML =
+      '<button id="homeBtn" title="' + esc(L('homeTip')) + '"><span aria-hidden="true">🏠</span><span class="lbl">' + esc(L('home')) + '</span></button>' +
+      '<div class="tabs" role="tablist">' + IDS.map(function (id) {
+        return '<button role="tab" data-go="' + id + '" title="' + esc(L(id + 'T')) + '" aria-selected="' + (id === current) + '" class="' +
+          (id === current ? 'on ' : '') + (frames[id] ? 'live' : '') + '"><span aria-hidden="true">' + ICON[id] + '</span><span class="lbl">' + esc(L(id + 'N')) + '</span><i class="dot"></i></button>';
+      }).join('') + '</div>' +
+      '<button id="reloadBtn" title="' + esc(L('reloadTip')) + '" aria-label="' + esc(L('reloadTip')) + '">↻</button>';
+  }
+
+  // Players Handbook suchen: eingestellter Pfad → gleicher Ordner → fester Fallback-Pfad.
+  // Die Prüfung lädt die Datei als Skript; der dabei entstehende Syntaxfehler ist erwartet und wird ausgeblendet.
+  window.addEventListener('error', function (e) { if (e.filename && e.filename.indexOf('probe=') >= 0) e.preventDefault(); });
+  function probe(url, cb) {
+    var s = document.createElement('script'), done = false;
+    function fin(ok) { if (done) return; done = true; s.remove(); cb(ok); }
+    s.onload = function () { fin(true); };
+    s.onerror = function () { fin(false); };
+    setTimeout(function () { fin(false); }, 6000);
+    s.src = url + (url.indexOf('?') < 0 ? '?probe=' : '&probe=') + Date.now();
+    document.head.appendChild(s);
+  }
+  var phbTok = 0, phbHit = null;   // phbHit: zuletzt gefundener Pfad, damit nicht bei jedem Wechsel neu gesucht wird
+  function checkPhb() {
+    var tok = ++phbTok, manual = !!(U.paths && U.paths.phb);
+    var list = phbHit ? [phbHit] : [phbPath(), PHB_NAME, PHB_FALLBACK].filter(function (x, i, a) { return x && a.indexOf(x) === i; });
+    (function next(i) {
+      var el = document.getElementById('chk_phb'), a = document.getElementById('open_phb'), pa = document.getElementById('path_phb');
+      if (!el || tok !== phbTok) return;
+      if (i >= list.length) { el.className = 'chk bad'; el.textContent = L('missing'); a.classList.add('warn'); pa.textContent = '📁 ' + phbPath(); pa.hidden = false; return; }
+      probe(toUrl(list[i]), function (ok) {
+        if (tok !== phbTok) return;
+        if (!ok) return next(i + 1);
+        phbHit = list[i];
+        a.href = toUrl(list[i]); el.className = 'chk'; el.textContent = '';
+        pa.textContent = '📁 ' + list[i]; pa.hidden = !manual;
+      });
+    })(0);
+  }
+
+  // ---------- Tools: jedes läuft in einem eigenen Rahmen und bleibt beim Wechseln erhalten ----------
+  var frames = {}, current = '';
+  var bar = document.getElementById('bar'), stage = document.getElementById('stage');
+  function baseName(u) {
+    var s = String(u).split(/[?#]/)[0];
+    try { s = decodeURIComponent(s); } catch (e) { }
+    return s.replace(/\\/g, '/').split('/').pop().toLowerCase();
+  }
+  // Führt ein Link/Fenster-Aufruf eines Tools zu einem anderen Tool oder zur Startseite? → 'home', Tool-Kennung oder ''
+  function target(u) {
+    if (!u || /^(blob|data|javascript|about|mailto):/i.test(u)) return '';
+    var b = baseName(u); if (!b) return '';
+    if (HOME_FILES.indexOf(b) >= 0) return 'home';
+    var p = U.paths || {};
+    for (var i = 0; i < IDS.length; i++) {
+      var id = IDS[i];
+      if (b === TOOLS[id].file.toLowerCase() || (p[id] && b === baseName(p[id]))) return id;
+    }
+    return '';
+  }
+  function mount(id) {
+    var f = document.createElement('iframe');
+    f.id = 'frame_' + id; f.title = L(id + 'T'); f.setAttribute('allowfullscreen', '');
+    f.addEventListener('load', function () { if (current === id) setTitle(); });
+    f.srcdoc = TOOLS[id].html;
+    stage.appendChild(f); frames[id] = f;
+    return f;
+  }
+  function drop(id) { if (frames[id]) { frames[id].remove(); delete frames[id]; } }
+  function setTitle() {
+    var t = '';
+    try { t = current && frames[current].contentDocument.title; } catch (e) { }
+    document.title = t || 'The Ultimate ' + L('title');
+  }
+  function paint() {
+    var inTool = !!current;
+    document.body.classList.toggle('in-tool', inTool);
+    bar.hidden = stage.hidden = !inTool;
+    IDS.forEach(function (id) { if (frames[id]) frames[id].classList.toggle('on', id === current); });
+    renderBar();
+    if (!inTool) renderHome();
+    setTitle();
+    if (inTool) { try { bar.querySelector('button.on').scrollIntoView({ block: 'nearest', inline: 'nearest' }); frames[current].focus(); } catch (e) { } } else window.scrollTo(0, 0);
+  }
+  function show(id) {
+    if (!TOOLS[id]) return goHome();
+    if (!frames[id]) mount(id);
+    current = id; paint();
+  }
+  function goHome() { current = ''; paint(); }
+  function setHash(h) {
+    if (location.hash.replace(/^#/, '') === h) return;
+    try { history.pushState(null, '', h ? '#' + h : location.pathname + location.search); } catch (e) { location.hash = h; }
+  }
+  function go(id) { setHash(id || ''); if (id) show(id); else goHome(); }
+  function route() { var h = location.hash.replace(/^#/, ''); if (TOOLS[h]) show(h); else goHome(); }
+  window.addEventListener('hashchange', route);
+  window.addEventListener('popstate', route);
+
+  // Wird vom Start-Skript jedes eingebetteten Tools aufgerufen, bevor dessen eigener Code läuft.
+  window.DNDMaker = {
+    go: go,
+    hook: function (win, id) {
+      var nativeOpen = win.open;
+      win.open = function (u) {
+        var t = target(u == null ? '' : String(u));
+        if (!t) return nativeOpen.apply(win, arguments);
+        if (t === 'home') { go(''); return window; }
+        // Die Sessionverwaltung übergibt eine Begegnung über „eb.launch“; der Encounter Builder liest sie nur beim Start.
+        var pending = null; try { pending = t === 'encounter' && localStorage.getItem('eb.launch'); } catch (e) { }
+        if (pending) drop(t);
+        go(t);
+        return frames[t].contentWindow || window;
+      };
+      win.addEventListener('click', function (e) {
+        var a = e.target && e.target.closest && e.target.closest('a[href]'); if (!a || a.hasAttribute('download')) return;
+        var t = target(a.getAttribute('href')); if (!t) return;
+        e.preventDefault(); e.stopPropagation(); go(t === 'home' ? '' : t);
+      }, true);
+    }
+  };
+
+  // ---------- Einstellungen ----------
+  function openSettings() {
+    var u = U.paths || {};
+    document.getElementById('dlg').innerHTML =
+      '<h3 id="dlgT">⚙️ ' + esc(L('dlgT')) + '</h3><p class="hint">' + esc(L('dlgHint')) + '</p>' +
+      '<div class="field"><label for="f_phb">' + esc(L('phbL')) + '</label>' +
+      '<input id="f_phb" value="' + esc(u.phb || '') + '" placeholder="' + esc(L('stdV') + ': ' + PHB_DEFAULT) + '" spellcheck="false">' +
+      '<small>' + esc(L('phbS')) + '</small></div>' +
+      '<p class="vers-h">' + esc(L('versH')) + '</p><ul class="vers">' + IDS.map(function (id) {
+        return '<li><span>' + ICON[id] + ' ' + esc(L(id + 'T')) + '</span><span>' + esc(L('state') + ' ' + when(TOOLS[id].updated)) + '</span></li>';
+      }).join('') + '</ul><p class="hint" style="margin-top:8px">' + esc(L('built') + ' ' + when(BUILD.built)) + '</p>' +
+      '<div class="dlg-actions"><span class="saved-msg" id="okMsg">' + esc(L('saved')) + '</span>' +
+      '<button class="btn small" data-d="close">' + esc(L('close')) + '</button>' +
+      '<button class="btn primary small" data-d="save">💾 ' + esc(L('save')) + '</button></div>';
+    document.getElementById('ov').classList.add('on');
+    document.getElementById('f_phb').focus();
+  }
+  function closeSettings() { document.getElementById('ov').classList.remove('on'); }
+  function flash() { var m = document.getElementById('okMsg'); if (m) { m.classList.add('on'); setTimeout(function () { m.classList.remove('on'); }, 1400); } }
+
+  document.addEventListener('click', function (e) {
+    var t = e.target.closest('[data-lang],#setBtn,[data-d],[data-go],#homeBtn,#reloadBtn,a.open');
+    if (!t) { if (e.target.id === 'ov') closeSettings(); return; }
+    if (t.matches('a.open')) { e.preventDefault(); go(t.getAttribute('href').slice(1)); return; }
+    if (t.dataset.go) { go(t.dataset.go); return; }
+    if (t.id === 'homeBtn') { go(''); return; }
+    if (t.id === 'reloadBtn') { if (current && confirm(L('reloadAsk'))) { var id = current; drop(id); show(id); } return; }
+    if (t.dataset.lang) { lang = t.dataset.lang; store(function (o) { o.lang = lang; }); paint(); return; }
+    if (t.id === 'setBtn') { openSettings(); return; }
+    if (t.dataset.d === 'close') closeSettings();
+    else if (t.dataset.d === 'save') {
+      var v = document.getElementById('f_phb').value.trim();
+      store(function (o) { o.paths = o.paths || {}; if (v) o.paths.phb = v; else delete o.paths.phb; });
+      phbHit = null; renderHome(); flash(); setTimeout(closeSettings, 700);
+    }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (!document.getElementById('ov').classList.contains('on')) return;
+    if (e.key === 'Escape') closeSettings();
+    if (e.key === 'Enter' && e.target.matches('#dlg input')) { var s = document.querySelector('[data-d="save"]'); if (s) s.click(); }
+  });
+
+  document.body.insertAdjacentHTML('afterbegin', ['tl', 'tr', 'bl', 'br'].map(SVG.corner).join(''));
+  route();
+})();
+</script>
+</body>
+</html>

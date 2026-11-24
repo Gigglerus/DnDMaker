@@ -1,0 +1,7 @@
+DND5e Atlas – Quellcode
+Bauen:   python build.py   (erzeugt DND5e_Atlas.html aus src/ und fonts_eb.css)
+Dateien: src/data.js (Stammdaten, Vorschlagswerte), src/detect.js (Städteerkennung Raster/SVG),
+         src/app.js (Oberfläche), src/labels.js (Beschriftungen, Namensplatzierung, Bildexport),
+         src/poi.js (Läden & Orte je Stadt, Stadtkarte), src/orn.js (Ornamente/Logo), src/style.css
+Tests:   test/*.js mit Node + Playwright (Pfade zeigen auf /home/claude/atlas – bei Bedarf anpassen),
+         Testkarten map.jpg, map2.jpg, azg.svg; Sollpositionen truth.json, truth2.json.
